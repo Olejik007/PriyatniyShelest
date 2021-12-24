@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PriyatnyyShelestDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Agents">
+    <Key>
+      <PropertyRef Name="IdAgent" />
+    </Key>
+    <Property Name="IdAgent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AgentType" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AgentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LogoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Priority" Type="Int32" Nullable="false" />
+    <Property Name="Director" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="INN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="KPP" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ProductSale" Relationship="Self.FK_ProductSale_Agents" FromRole="Agents" ToRole="ProductSale" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="IdProduct" />
+    </Key>
+    <Property Name="IdProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProductType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Article" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Quanity" Type="Int32" Nullable="false" />
+    <Property Name="WorkshopNumber" Type="Int32" Nullable="false" />
+    <Property Name="AgentPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="ProductSale" Relationship="Self.FK_ProductSale_Products" FromRole="Products" ToRole="ProductSale" />
+  </EntityType>
+  <EntityType Name="ProductSale">
+    <Key>
+      <PropertyRef Name="IdSale" />
+    </Key>
+    <Property Name="IdSale" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdProduct" Type="Int32" Nullable="false" />
+    <Property Name="IdAgent" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Quanity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Agents" Relationship="Self.FK_ProductSale_Agents" FromRole="ProductSale" ToRole="Agents" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_ProductSale_Products" FromRole="ProductSale" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="VW_AgentDetails">
+    <Key>
+      <PropertyRef Name="Тип_агента" />
+      <PropertyRef Name="Наименование_агента" />
+      <PropertyRef Name="Номер_телефона" />
+      <PropertyRef Name="Приоритет" />
+      <PropertyRef Name="Описание" />
+      <PropertyRef Name="IdAgent" />
+    </Key>
+    <Property Name="Тип_агента" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Наименование_агента" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Номер_телефона" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Приоритет" Type="Int32" Nullable="false" />
+    <Property Name="Скидка_агента" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Количество_продаж_за_год" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Описание" Type="String" MaxLength="269" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IdAgent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LogoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_ProductSale_Agents">
+    <End Role="Agents" Type="Self.Agents" Multiplicity="1" />
+    <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Agents">
+        <PropertyRef Name="IdAgent" />
+      </Principal>
+      <Dependent Role="ProductSale">
+        <PropertyRef Name="IdAgent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductSale_Products">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="IdProduct" />
+      </Principal>
+      <Dependent Role="ProductSale">
+        <PropertyRef Name="IdProduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PriyatnyyShelestDbEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Agents" EntityType="Self.Agents" />
+    <EntitySet Name="Products" EntityType="Self.Products" />
+    <EntitySet Name="ProductSale" EntityType="Self.ProductSale" />
+    <EntitySet Name="VW_AgentDetails" EntityType="Self.VW_AgentDetails" />
+    <AssociationSet Name="FK_ProductSale_Agents" Association="Self.FK_ProductSale_Agents">
+      <End Role="Agents" EntitySet="Agents" />
+      <End Role="ProductSale" EntitySet="ProductSale" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductSale_Products" Association="Self.FK_ProductSale_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductSale" EntitySet="ProductSale" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

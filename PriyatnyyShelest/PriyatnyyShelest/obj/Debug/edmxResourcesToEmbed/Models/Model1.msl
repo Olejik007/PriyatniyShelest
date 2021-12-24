@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище PriyatnyyShelestDbModelContainer" CdmEntityContainer="PriyatnyyShelestDbEntities1">
+    <EntitySetMapping Name="Agents">
+      <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.Agents">
+        <MappingFragment StoreEntitySet="Agents">
+          <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+          <ScalarProperty Name="AgentType" ColumnName="AgentType" />
+          <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Director" ColumnName="Director" />
+          <ScalarProperty Name="INN" ColumnName="INN" />
+          <ScalarProperty Name="KPP" ColumnName="KPP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.Products">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+          <ScalarProperty Name="Article" ColumnName="Article" />
+          <ScalarProperty Name="Quanity" ColumnName="Quanity" />
+          <ScalarProperty Name="WorkshopNumber" ColumnName="WorkshopNumber" />
+          <ScalarProperty Name="AgentPrice" ColumnName="AgentPrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductSale">
+      <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.ProductSale">
+        <MappingFragment StoreEntitySet="ProductSale">
+          <ScalarProperty Name="IdSale" ColumnName="IdSale" />
+          <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+          <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Quanity" ColumnName="Quanity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VW_AgentDetails">
+      <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.VW_AgentDetails">
+        <MappingFragment StoreEntitySet="VW_AgentDetails">
+          <ScalarProperty Name="Тип_агента" ColumnName="Тип агента" />
+          <ScalarProperty Name="Наименование_агента" ColumnName="Наименование агента" />
+          <ScalarProperty Name="Номер_телефона" ColumnName="Номер телефона" />
+          <ScalarProperty Name="Приоритет" ColumnName="Приоритет" />
+          <ScalarProperty Name="Скидка_агента" ColumnName="Скидка агента" />
+          <ScalarProperty Name="Количество_продаж_за_год" ColumnName="Количество продаж за год" />
+          <ScalarProperty Name="Описание" ColumnName="Описание" />
+          <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+          <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

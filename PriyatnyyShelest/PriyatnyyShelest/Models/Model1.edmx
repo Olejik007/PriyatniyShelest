@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PriyatnyyShelestDbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agents">
+          <Key>
+            <PropertyRef Name="IdAgent" />
+          </Key>
+          <Property Name="IdAgent" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentType" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="AgentName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="LogoPath" Type="text" />
+          <Property Name="Address" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="Director" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="INN" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="KPP" Type="varchar" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Article" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Quanity" Type="int" Nullable="false" />
+          <Property Name="WorkshopNumber" Type="int" Nullable="false" />
+          <Property Name="AgentPrice" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductSale">
+          <Key>
+            <PropertyRef Name="IdSale" />
+          </Key>
+          <Property Name="IdSale" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="IdAgent" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Quanity" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "PriyatnyyShelestDb.dbo.VW_AgentDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="VW_AgentDetails">
+          <Key>
+            <PropertyRef Name="Тип агента" />
+            <PropertyRef Name="Наименование агента" />
+            <PropertyRef Name="Номер телефона" />
+            <PropertyRef Name="Приоритет" />
+            <PropertyRef Name="Описание" />
+            <PropertyRef Name="IdAgent" />
+          </Key>
+          <Property Name="Тип агента" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Наименование агента" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Номер телефона" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Приоритет" Type="int" Nullable="false" />
+          <Property Name="Скидка агента" Type="money" />
+          <Property Name="Количество продаж за год" Type="varchar" MaxLength="15" />
+          <Property Name="Описание" Type="varchar" MaxLength="269" Nullable="false" />
+          <Property Name="IdAgent" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogoPath" Type="text" />
+        </EntityType>
+        <Association Name="FK_ProductSale_Agents">
+          <End Role="Agents" Type="Self.Agents" Multiplicity="1" />
+          <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agents">
+              <PropertyRef Name="IdAgent" />
+            </Principal>
+            <Dependent Role="ProductSale">
+              <PropertyRef Name="IdAgent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductSale_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="ProductSale">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PriyatnyyShelestDbModelContainer">
+          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSale" EntityType="Self.ProductSale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VW_AgentDetails" EntityType="Self.VW_AgentDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_AgentDetails].[Тип агента] AS [Тип агента], 
+    [VW_AgentDetails].[Наименование агента] AS [Наименование агента], 
+    [VW_AgentDetails].[Номер телефона] AS [Номер телефона], 
+    [VW_AgentDetails].[Приоритет] AS [Приоритет], 
+    [VW_AgentDetails].[Скидка агента] AS [Скидка агента], 
+    [VW_AgentDetails].[Количество продаж за год] AS [Количество продаж за год], 
+    [VW_AgentDetails].[Описание] AS [Описание], 
+    [VW_AgentDetails].[IdAgent] AS [IdAgent], 
+    [VW_AgentDetails].[LogoPath] AS [LogoPath]
+    FROM [dbo].[VW_AgentDetails] AS [VW_AgentDetails]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ProductSale_Agents" Association="Self.FK_ProductSale_Agents">
+            <End Role="Agents" EntitySet="Agents" />
+            <End Role="ProductSale" EntitySet="ProductSale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductSale_Products" Association="Self.FK_ProductSale_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSale" EntitySet="ProductSale" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PriyatnyyShelestDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agents">
+          <Key>
+            <PropertyRef Name="IdAgent" />
+          </Key>
+          <Property Name="IdAgent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentType" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AgentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LogoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="Director" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="INN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="KPP" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ProductSale" Relationship="Self.FK_ProductSale_Agents" FromRole="Agents" ToRole="ProductSale" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Article" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quanity" Type="Int32" Nullable="false" />
+          <Property Name="WorkshopNumber" Type="Int32" Nullable="false" />
+          <Property Name="AgentPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="ProductSale" Relationship="Self.FK_ProductSale_Products" FromRole="Products" ToRole="ProductSale" />
+        </EntityType>
+        <EntityType Name="ProductSale">
+          <Key>
+            <PropertyRef Name="IdSale" />
+          </Key>
+          <Property Name="IdSale" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="IdAgent" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Quanity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Agents" Relationship="Self.FK_ProductSale_Agents" FromRole="ProductSale" ToRole="Agents" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_ProductSale_Products" FromRole="ProductSale" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="VW_AgentDetails">
+          <Key>
+            <PropertyRef Name="Тип_агента" />
+            <PropertyRef Name="Наименование_агента" />
+            <PropertyRef Name="Номер_телефона" />
+            <PropertyRef Name="Приоритет" />
+            <PropertyRef Name="Описание" />
+            <PropertyRef Name="IdAgent" />
+          </Key>
+          <Property Name="Тип_агента" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Наименование_агента" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Номер_телефона" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Приоритет" Type="Int32" Nullable="false" />
+          <Property Name="Скидка_агента" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Количество_продаж_за_год" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Описание" Type="String" MaxLength="269" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdAgent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_ProductSale_Agents">
+          <End Role="Agents" Type="Self.Agents" Multiplicity="1" />
+          <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agents">
+              <PropertyRef Name="IdAgent" />
+            </Principal>
+            <Dependent Role="ProductSale">
+              <PropertyRef Name="IdAgent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductSale_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductSale" Type="Self.ProductSale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="ProductSale">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PriyatnyyShelestDbEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agents" EntityType="Self.Agents" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="ProductSale" EntityType="Self.ProductSale" />
+          <EntitySet Name="VW_AgentDetails" EntityType="Self.VW_AgentDetails" />
+          <AssociationSet Name="FK_ProductSale_Agents" Association="Self.FK_ProductSale_Agents">
+            <End Role="Agents" EntitySet="Agents" />
+            <End Role="ProductSale" EntitySet="ProductSale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductSale_Products" Association="Self.FK_ProductSale_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSale" EntitySet="ProductSale" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PriyatnyyShelestDbModelContainer" CdmEntityContainer="PriyatnyyShelestDbEntities1">
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.Agents">
+              <MappingFragment StoreEntitySet="Agents">
+                <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+                <ScalarProperty Name="AgentType" ColumnName="AgentType" />
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Director" ColumnName="Director" />
+                <ScalarProperty Name="INN" ColumnName="INN" />
+                <ScalarProperty Name="KPP" ColumnName="KPP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="Article" ColumnName="Article" />
+                <ScalarProperty Name="Quanity" ColumnName="Quanity" />
+                <ScalarProperty Name="WorkshopNumber" ColumnName="WorkshopNumber" />
+                <ScalarProperty Name="AgentPrice" ColumnName="AgentPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSale">
+            <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.ProductSale">
+              <MappingFragment StoreEntitySet="ProductSale">
+                <ScalarProperty Name="IdSale" ColumnName="IdSale" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Quanity" ColumnName="Quanity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_AgentDetails">
+            <EntityTypeMapping TypeName="PriyatnyyShelestDbModel.VW_AgentDetails">
+              <MappingFragment StoreEntitySet="VW_AgentDetails">
+                <ScalarProperty Name="Тип_агента" ColumnName="Тип агента" />
+                <ScalarProperty Name="Наименование_агента" ColumnName="Наименование агента" />
+                <ScalarProperty Name="Номер_телефона" ColumnName="Номер телефона" />
+                <ScalarProperty Name="Приоритет" ColumnName="Приоритет" />
+                <ScalarProperty Name="Скидка_агента" ColumnName="Скидка агента" />
+                <ScalarProperty Name="Количество_продаж_за_год" ColumnName="Количество продаж за год" />
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="IdAgent" ColumnName="IdAgent" />
+                <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
